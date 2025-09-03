@@ -6,11 +6,20 @@
     <ng-template pTemplate="list" let-products>
         @for (product of products; track product) {
             <p-card class="block mb-2">
+				<!-- category -->
                 <span class="font-medium text-secondary text-sm">{{ product.category }}</span>
-                <div class="text-lg font-medium text-900 mt-2">{{ product.name }}</div>
-
+				<!-- name and price -->
+                <div class="text-lg font-medium text-900 mt-2">{{ product.name }} - {{ product.price }}€</div>
+				<!-- description -->
+				<div> {{ product.description}} </div>
+				<!-- image --> 
+				<img [src]="'assets/img_products/' + product.image" class="img-products" alt=""/>
+				<!-- rating -->
+				<div>{{getRate(product.rating)}}</div>
+				<!-- options -->
                 <ng-template pTemplate="footer">
                     <div class="flex gap-3 mt-1">
+						<p-button [label]="product.inventoryStatus !== 'OUTOFSTOCK' ? 'Ajouter 1 au panier' : 'Rupture de stock'" severity="primary" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'" (onClick)="addToCart(product)"/>
                         <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)"/>
                         <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
                     </div>

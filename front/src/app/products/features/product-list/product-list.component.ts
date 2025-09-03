@@ -23,6 +23,7 @@ const emptyProduct: Product = {
   createdAt: 0,
   updatedAt: 0,
 };
+const MAX_RATING = 10; //le rating est une note sur 10
 
 @Component({
   selector: "app-product-list",
@@ -76,4 +77,26 @@ export class ProductListComponent implements OnInit {
   private closeDialog() {
     this.isDialogVisible = false;
   }
+  
+  /**
+  * Récupère le rating en notation étoile pour affichage
+  */
+  public getRate(rating : number): string {
+	return '★'.repeat(rating).trim() + '☆'.repeat(MAX_RATING-rating).trim();
+  }
+  
+  /**
+  * Ajoute un produit au panier
+  */
+  public addToCart(product: Product) {
+	//TODO
+  }
+  
+  /**
+  * Supprime un produit du panier
+  */
+  public deleteFromCart(product: Product) {
+	//TODO
+  }
+  
 }
