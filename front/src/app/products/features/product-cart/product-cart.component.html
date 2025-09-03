@@ -1,0 +1,20 @@
+<h1 class="text-center">Contenu du panier (Total : {{getTotalCartCost()}}€)</h1>
+
+<p-dataView #dv [value]="productsInCart()">
+    <ng-template pTemplate="list" let-productsInCart>
+        @for (item of productsInCart; track item) {
+            @if (item?.product) {
+                <p-card class="block mb-2">
+                    <div>
+                        {{ item.product.name }} ({{ item.product.price }} €)
+                        <button (click)="deleteFromCart(item.cartItemId)" style="float:right">Supprimer</button>
+                    </div>
+              </p-card>
+            }
+        }
+    </ng-template>
+
+    <ng-template pTemplate="empty">
+      <div>Ce panier est vide</div>
+    </ng-template>
+</p-dataView>

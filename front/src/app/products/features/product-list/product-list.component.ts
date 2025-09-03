@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
 import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
+import { CartService } from "app/products/data-access/cart.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
@@ -34,6 +35,7 @@ const MAX_RATING = 10; //le rating est une note sur 10
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
+  private readonly cartService = inject(CartService);
 
   public readonly products = this.productsService.products;
 
@@ -77,26 +79,23 @@ export class ProductListComponent implements OnInit {
   private closeDialog() {
     this.isDialogVisible = false;
   }
-  
+
+  trackByProductId(index: number, product: Product): number {
+    return product.id;
+  }
+
   /**
   * Récupère le rating en notation étoile pour affichage
   */
   public getRate(rating : number): string {
-	return '★'.repeat(rating).trim() + '☆'.repeat(MAX_RATING-rating).trim();
+	  return '★'.repeat(rating).trim() + '☆'.repeat(MAX_RATING-rating).trim();
   }
-  
+
   /**
   * Ajoute un produit au panier
   */
   public addToCart(product: Product) {
-	//TODO
+    this.cartService.addToCart(product);
   }
-  
-  /**
-  * Supprime un produit du panier
-  */
-  public deleteFromCart(product: Product) {
-	//TODO
-  }
-  
+
 }

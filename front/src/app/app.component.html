@@ -6,11 +6,11 @@
         {{ title }}
     </div>
     <div class="p-toolbar-group-end">
-        <i class="pi pi-shopping-cart" style="font-size: 2rem"></i>
+      <i class="pi pi-shopping-cart" style="font-size: 2rem" (click)="displayCart()"></i>
     </div>
 </p-toolbar>
-<p-splitter 
-    [panelSizes]="[20, 80]" 
+<p-splitter
+    [panelSizes]="[20, 80]"
     [style]="{ height: 'calc(100vh - 100px)' }">
     <ng-template pTemplate>
         <div class="w-full">
@@ -23,3 +23,6 @@
         </div>
     </ng-template>
 </p-splitter>
+<p-dialog [(visible)]="isDialogVisible" [style]="{ width: '50vw' }">
+  <app-product-cart/>
+</p-dialog>
