@@ -1,0 +1,36 @@
+.contact-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+
+  small {
+    color: red;
+    display: block;
+    margin-top: 0.2rem;
+  }
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}

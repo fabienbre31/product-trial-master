@@ -1,0 +1,33 @@
+<div class="contact-container">
+  <h2>Formulaire de contact</h2>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email :</label>
+      <input id="email" formControlName="email" type="email" />
+
+      @if (submitted && email!.errors && email!.errors!['required']) {
+          <small>L'email est requis.</small>
+      }
+      @if (submitted && email!.errors && email!.errors!['email']) {
+          <small>Le format de l'email est invalide.</small>
+      }
+    </div>
+
+    <!-- Message -->
+    <div class="form-group">
+      <label for="message">Message :</label>
+      <textarea id="message" formControlName="message"></textarea>
+
+      @if (submitted && message!.errors && message!.errors!['required']) {
+          <small>Le message est requis.</small>
+      }
+      @if (submitted && message!.errors && message!.errors!['maxlength']) {
+          <small>Le message doit contenir au maximum 300 caractères.</small>
+      }
+    </div>
+
+    <button type="submit">Envoyer</button>
+  </form>
+</div>

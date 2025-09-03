@@ -1,18 +1,13 @@
-import {
-    Component,
-  } from "@angular/core";
+import { Component } from "@angular/core";
 import { MenuItem } from "primeng/api";
-  import { PanelMenuModule } from 'primeng/panelmenu';
-  
-  @Component({
+import { PanelMenuModule } from 'primeng/panelmenu';
+
+@Component({
     selector: "app-panel-menu",
     standalone: true,
     imports: [PanelMenuModule],
-    template: `
-        <p-panelMenu [model]="items" styleClass="w-full" />
-    `
-  })
-  export class PanelMenuComponent {
+    template: `<p-panelMenu [model]="items" styleClass="w-full" />`
+}) export class PanelMenuComponent {
 
     public readonly items: MenuItem[] = [
         {
@@ -24,7 +19,11 @@ import { MenuItem } from "primeng/api";
             label: 'Produits',
             icon: 'pi pi-barcode',
             routerLink: ['/products/list']
+        },
+        {
+            label: 'Contact',
+            icon: 'pi pi-user',
+            routerLink: ['/contact']
         }
     ]
-  }
-  
+}
