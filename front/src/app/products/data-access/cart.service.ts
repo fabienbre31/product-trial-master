@@ -21,4 +21,8 @@ export class CartService {
     getTotalCartCost() : number {
         return this._productsInCart().reduce((total, item) => total + item.product.price, 0);
     }
+
+    getCartAmountOfProducts() : number {
+        return this._productsInCart().length;
+    }
 }

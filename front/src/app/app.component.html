@@ -6,7 +6,7 @@
         {{ title }}
     </div>
     <div class="p-toolbar-group-end">
-      <i class="pi pi-shopping-cart" style="font-size: 2rem" (click)="displayCart()"></i>
+      <i class="pi pi-shopping-cart" matBadge="{{getCartAmountOfProducts()}}" matBadgeSize="large" style="font-size: 2rem" (click)="displayCart()"></i>
     </div>
 </p-toolbar>
 <p-splitter
