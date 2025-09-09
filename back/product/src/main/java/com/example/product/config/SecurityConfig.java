@@ -2,6 +2,7 @@ package com.example.product.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -23,7 +25,7 @@ import java.util.Collections;
 @Configuration
 public class SecurityConfig {
 
-    private final String jwtSecret = "SecretKeyJWT12345";
+    public static final String JWT_SECRET = "ThisIsAReallyLongSecretKeyForTestsThatIsSecureEnough123!"; //clé de configuration
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,22 +47,28 @@ public class SecurityConfig {
 
     class JwtFilter extends OncePerRequestFilter {
         @Override
-        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                        FilterChain filterChain) throws ServletException, IOException {
+        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
             String authHeader = request.getHeader("Authorization");
+            //System.out.println("Authorization header: " + authHeader);
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
                 try {
                     Claims claims = Jwts.parser()
-                            .setSigningKey(jwtSecret)
+                            .setSigningKey(Keys.hmacShaKeyFor(JWT_SECRET.getBytes()))
                             .parseClaimsJws(token)
                             .getBody();
-                    request.setAttribute("email", claims.getSubject());
+                    String email = claims.getSubject();
+                    //System.out.println("JWT parsed successfully, email: " + email);
+                    request.setAttribute("email", email);
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+                    SecurityContextHolder.getContext().setAuthentication(auth);
                 } catch (Exception e) {
+                    //System.out.println("JWT parsing failed: " + e.getMessage());
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT");
                     return;
                 }
             } else if (request.getRequestURI().startsWith("/api")) {
+                //System.out.println("Missing Authorization header for API request");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing Authorization header");
                 return;
             }
