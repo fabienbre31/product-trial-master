@@ -47,6 +47,4 @@ public class Product {
     public enum InventoryStatus {
         INSTOCK, LOWSTOCK, OUTOFSTOCK
     }
-
-    // Getters and Setters
 }
