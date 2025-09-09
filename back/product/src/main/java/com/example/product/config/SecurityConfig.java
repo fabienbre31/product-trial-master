@@ -2,6 +2,7 @@ package com.example.product.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,13 +20,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.Collections;
 
 @Configuration
 public class SecurityConfig {
 
-    public static final String JWT_SECRET = "ThisIsAReallyLongSecretKeyForTestsThatIsSecureEnough123!"; //clé de configuration
+    public static final SecretKey JWT_SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS256); //clé de sécurité
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -54,7 +56,7 @@ public class SecurityConfig {
                 String token = authHeader.substring(7);
                 try {
                     Claims claims = Jwts.parser()
-                            .setSigningKey(Keys.hmacShaKeyFor(JWT_SECRET.getBytes()))
+                            .setSigningKey(JWT_SECRET)
                             .parseClaimsJws(token)
                             .getBody();
                     String email = claims.getSubject();

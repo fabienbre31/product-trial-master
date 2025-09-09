@@ -40,7 +40,7 @@ class ProductApplicationTests {
                 .setSubject("admin@admin.com")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-                .signWith(SignatureAlgorithm.HS256, com.example.product.config.SecurityConfig.JWT_SECRET.getBytes())
+                .signWith(com.example.product.config.SecurityConfig.JWT_SECRET)
                 .compact();
 
         // Générer JWT pour un utilisateur normal
@@ -48,7 +48,7 @@ class ProductApplicationTests {
                 .setSubject("user@example.com")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-                .signWith(SignatureAlgorithm.HS256, com.example.product.config.SecurityConfig.JWT_SECRET.getBytes())
+                .signWith(com.example.product.config.SecurityConfig.JWT_SECRET)
                 .compact();
 
         // Créer un produit de test

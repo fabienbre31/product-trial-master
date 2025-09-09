@@ -38,7 +38,7 @@ public class AuthController {
                             .setSubject(user.getEmail())
                             .setIssuedAt(new Date())
                             .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 jour
-                            .signWith(Keys.hmacShaKeyFor(com.example.product.config.SecurityConfig.JWT_SECRET.getBytes()))
+                            .signWith(com.example.product.config.SecurityConfig.JWT_SECRET)
                             .compact();
                     return ResponseEntity.ok(Map.of("token", token));
                 })
