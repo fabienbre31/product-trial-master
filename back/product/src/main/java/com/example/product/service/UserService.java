@@ -27,4 +27,9 @@ public class UserService {
         return repository.findByEmail(email)
                 .filter(u -> passwordEncoder.matches(password, u.getPassword()));
     }
+
+    public Optional<User> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
 }
