@@ -1,12 +1,20 @@
 package com.example.product.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
 
+/**
+ * A product is an entity with an ID, a code, a name, a description, an image name, a category, a price, a quantity available
+ * an internal reference, a shellID, an inventory status, a rating, a date of creation in database and a date of last update in database
+ */
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Product {

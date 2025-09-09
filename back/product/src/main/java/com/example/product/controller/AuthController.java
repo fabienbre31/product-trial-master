@@ -3,8 +3,6 @@ package com.example.product.controller;
 import com.example.product.model.User;
 import com.example.product.service.UserService;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +14,30 @@ import java.util.Map;
 public class AuthController {
 
     private final UserService userService;
-    private final String jwtSecret = "ThisIsAReallyLongSecretKeyForTestsThatIsSecureEnough123!";
 
     public AuthController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * create account with payload {username, firstName, password, email}
+     * @param payload
+     * @return
+     */
     @PostMapping("/account")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        return ResponseEntity.ok(userService.createUser(user));
+    public ResponseEntity<User> register(@RequestBody Map<String, String> payload) {
+        String username = payload.get("username");
+        String firstName = payload.get("firstName");
+        String password = payload.get("password");
+        String email = payload.get("email");
+        return ResponseEntity.ok(userService.createUser(username, firstName, password, email));
     }
 
+    /**
+     * create authentification token with payload {email,password}
+     * @param payload
+     * @return
+     */
     @PostMapping("/token")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> payload) {
         String email = payload.get("email");

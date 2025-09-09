@@ -1,6 +1,7 @@
 package com.example.product;
 
-import com.example.product.model.Cart;
+import com.example.product.model.User;
+import com.example.product.model.Wishlist;
 import com.example.product.model.Product;
 import com.example.product.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,16 +14,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import java.util.Date;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CartControllerTests {
+class WishlistControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,8 +40,9 @@ class CartControllerTests {
 
     @BeforeEach
     void setup() throws Exception {
-        // Créer un utilisateur pour les tests s'il n'existe pas deja
-        if (userRepository.findByEmail("user@example.com").isEmpty()){
+        // Create user if not existing
+        Optional<User> user = userRepository.findByEmail("user@example.com");
+        if (user.isEmpty()){
             String userJson = """
             {
                 "username": "testuser",
@@ -50,12 +52,12 @@ class CartControllerTests {
             }
             """;
             mockMvc.perform(post("/auth/account")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(userJson))
-                .andExpect(status().isOk());
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(userJson))
+                    .andExpect(status().isOk());
         }
 
-        // Créer un produit pour les tests
+        // Create product for tests
         testProduct = new Product();
         testProduct.setCode("TEST-123");
         testProduct.setName("Test Product");
@@ -78,7 +80,7 @@ class CartControllerTests {
         Product created = objectMapper.readValue(postResult.getResponse().getContentAsString(), Product.class);
         productId = created.getId();
 
-        // Générer token utilisateur
+        // Generate user token
         userToken = generateUserToken();
     }
 
@@ -101,66 +103,55 @@ class CartControllerTests {
     }
 
     @Test
-    void getCart_requiresAuthentication() throws Exception {
+    void getWishlistWithAndWithoutAuthentication() throws Exception {
         // Sans token -> 401
-        mockMvc.perform(get("/api/cart")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/wishlist")).andExpect(status().isUnauthorized());
 
         // Avec token utilisateur -> 200
-        mockMvc.perform(get("/api/cart")
+        mockMvc.perform(get("/api/wishlist")
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void addItemToCart() throws Exception {
-        MvcResult result = mockMvc.perform(post("/api/cart/add")
-                        .header("Authorization", "Bearer " + userToken)
-                        .param("productId", productId.toString())
-                        .param("quantity", "2"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Cart cart = objectMapper.readValue(result.getResponse().getContentAsString(), Cart.class);
-        assertThat(cart.getCartItems()).hasSize(1);
-        assertThat(cart.getCartItems().get(0).getQuantity()).isEqualTo(2);
-    }
-
-    @Test
-    void removeItemFromCart() throws Exception {
-        // Ajouter un produit
-        mockMvc.perform(post("/api/cart/add")
-                        .header("Authorization", "Bearer " + userToken)
-                        .param("productId", productId.toString())
-                        .param("quantity", "1"))
-                .andExpect(status().isOk());
-
-        // Supprimer le produit
-        MvcResult result = mockMvc.perform(post("/api/cart/remove")
+    void addAndRemoveWishlistProduct() throws Exception {
+        // Ajouter le produit
+        MvcResult result = mockMvc.perform(post("/api/wishlist/add")
                         .header("Authorization", "Bearer " + userToken)
                         .param("productId", productId.toString()))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Cart cart = objectMapper.readValue(result.getResponse().getContentAsString(), Cart.class);
-        assertThat(cart.getCartItems()).isEmpty();
+        Wishlist wishlist = objectMapper.readValue(result.getResponse().getContentAsString(), Wishlist.class);
+        assertThat(wishlist.getProducts()).hasSize(1);
+
+        // Supprimer le produit
+        result = mockMvc.perform(post("/api/wishlist/remove")
+                        .header("Authorization", "Bearer " + userToken)
+                        .param("productId", productId.toString()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        wishlist = objectMapper.readValue(result.getResponse().getContentAsString(), Wishlist.class);
+        assertThat(wishlist.getProducts()).isEmpty();
     }
 
+
     @Test
-    void clearCart() throws Exception {
+    void clearWishlist() throws Exception {
         // Ajouter plusieurs produits
-        mockMvc.perform(post("/api/cart/add")
+        mockMvc.perform(post("/api/wishlist/add")
                         .header("Authorization", "Bearer " + userToken)
-                        .param("productId", productId.toString())
-                        .param("quantity", "2"))
+                        .param("productId", productId.toString()))
                 .andExpect(status().isOk());
 
         // Vider le panier
-        MvcResult result = mockMvc.perform(post("/api/cart/clear")
+        MvcResult result = mockMvc.perform(post("/api/wishlist/clear")
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        Cart cart = objectMapper.readValue(result.getResponse().getContentAsString(), Cart.class);
-        assertThat(cart.getCartItems()).isEmpty();
+        Wishlist wishlist = objectMapper.readValue(result.getResponse().getContentAsString(), Wishlist.class);
+        assertThat(wishlist.getProducts()).isEmpty();
     }
 }
