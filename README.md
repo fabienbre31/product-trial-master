@@ -91,7 +91,7 @@ class Product {
       password: string
     }
     ```
-    Une vérification devra être effectuée parmi tout les utilisateurs de l'application afin de connecter celui qui correspond aux infos fournies. Un token JWT sera renvoyé en retour de la reqûete.
+✅  Une vérification devra être effectuée parmi tout les utilisateurs de l'application afin de connecter celui qui correspond aux infos fournies. ✅ Un token JWT sera renvoyé en retour de la reqûete.
 ✅ - Faire en sorte que seul l'utilisateur ayant le mail "admin@admin.com" puisse ajouter, modifier ou supprimer des produits. Une solution simple et générique devra être utilisée. Il n'est pas nécessaire de mettre en place une gestion des accès basée sur les rôles.
 ✅ - Ajouter la possibilité pour un utilisateur de gérer un panier d'achat pouvant contenir des produits.
 ✅ - Ajouter la possibilité pour un utilisateur de gérer une liste d'envie pouvant contenir des produits.
