@@ -37,7 +37,7 @@ Le site de e-commerce d'Alten a besoin de s'enrichir de nouvelles fonctionnalit�
 
 ### Partie 1
 
-Développer un back-end permettant la gestion de produits définis plus bas.
+✅ Développer un back-end permettant la gestion de produits définis plus bas.
 Vous pouvez utiliser la technologie de votre choix parmi la liste suivante :
 
 ❌- Node.js/Express
@@ -45,7 +45,7 @@ Vous pouvez utiliser la technologie de votre choix parmi la liste suivante :
 ❌- C#/.net Core
 ❌- PHP/Symphony : Utilisation d'API Platform interdite
 
-Un produit a les caractéristiques suivantes : 
+✅ Un produit a les caractéristiques suivantes : 
 
 ``` typescript
 class Product {
@@ -66,7 +66,7 @@ class Product {
 }
 ```
 
-Le back-end créé doit pouvoir gérer les produits dans une base de données SQL/NoSQL ou dans un fichier json.
+✅ Le back-end créé doit pouvoir gérer les produits dans une ✅base de données SQL/ ❌NoSQL ou dans un ❌fichier json.
 
 ### Partie 2
 
