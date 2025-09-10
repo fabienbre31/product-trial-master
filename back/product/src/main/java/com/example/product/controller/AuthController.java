@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
@@ -21,31 +20,69 @@ public class AuthController {
     }
 
     /**
-     * create account with payload {username, firstName, password, email}
-     * @param payload
+     * create account with payload {username, firstname, password, email}
+     * @param payload {username, firstname, password, email}
      * @return
      */
     @PostMapping("/account")
-    public ResponseEntity<User> register(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<?> register(@RequestBody Map<String, String> payload) {
         String username = payload.get("username");
-        String firstName = payload.get("firstName");
+        String firstname = payload.get("firstname");
         String password = payload.get("password");
         String email = payload.get("email");
-        return ResponseEntity.ok(userService.createUser(username, firstName, password, email));
+
+        // Fields are mandatory
+        if (username == null || username.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Username is required"));
+        }
+        if (firstname == null || firstname.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Firstname is required"));
+        }
+        if (password == null || password.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Password is required"));
+        }
+        if (email == null || email.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email is required"));
+        }
+
+        // Username is unique
+        if (userService.findByUsername(username).isPresent()) {
+            return ResponseEntity.status(409).body(Map.of("error", "Username already exists"));
+        }
+
+        // Email is unique
+        if (userService.findByEmail(email).isPresent()) {
+            return ResponseEntity.status(409).body(Map.of("error", "Email already exists"));
+        }
+
+        User user = userService.createUser(username, firstname, password, email);
+        return ResponseEntity.ok(user);
     }
 
     /**
-     * create authentification token with payload {email,password}
+     * create authentication token with payload {email, password}
      * @param payload
-     * @return
+     * @return JWT token if authentication succeeds, error message otherwise
      */
     @PostMapping("/token")
     public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> payload) {
         String email = payload.get("email");
         String password = payload.get("password");
 
-        return userService.authenticate(email, password)
+        // Fields are mandatory
+        if (email == null || email.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email is required"));
+        }
+        if (password == null || password.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Password is required"));
+        }
+
+        return userService.findByEmail(email)
                 .map(user -> {
+                    if (!userService.authenticate(email, password).isPresent()) {
+                        return ResponseEntity.status(401).body(Map.of("error", "Invalid password"));
+                    }
+                    // Génération du token JWT
                     String token = Jwts.builder()
                             .setSubject(user.getEmail())
                             .setIssuedAt(new Date())
@@ -54,6 +91,7 @@ public class AuthController {
                             .compact();
                     return ResponseEntity.ok(Map.of("token", token));
                 })
-                .orElse(ResponseEntity.status(401).build());
+                .orElseGet(() -> ResponseEntity.status(404).body(Map.of("error", "User not found")));
     }
+
 }

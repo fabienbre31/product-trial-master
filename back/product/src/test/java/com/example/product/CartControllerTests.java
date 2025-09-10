@@ -50,7 +50,7 @@ class CartControllerTests {
                 "password": "password"
             }
             """;
-            mockMvc.perform(post("/auth/account")
+            mockMvc.perform(post("/account")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(userJson))
                 .andExpect(status().isOk());
