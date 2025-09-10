@@ -102,9 +102,9 @@ Le back-end créé doit pouvoir gérer les produits dans une base de données SQ
 
 ## Installation en local
   - Version compilée du back : back/livrable/alten-shop-backend.jar
-  - En double cliquant sur ce Jar, l'application se lancera en background en local
+  - En double cliquant sur cette archive, l'application se lancera en background en local
     - S'il n'y a pas d'erreurs, vous pourrez alors accéder à la BDD H2 : localhost:8080/h2-console (endpoint qui échappe aux règles de sécurité mises en place dans l'application)
-    - En cas d'erreur, lancer le Jar depuis une console avec "java -jar <leJar>" pour plus d'informations. Java 17 est necessaire.
+    - En cas d'erreur, lancer l'archive depuis une console avec "java -jar [archive]" pour plus d'informations. Java 17 est necessaire.
   - Scenarios de tests postman : back/postman/api-tests.json
 
 ## Informations complémentaires
