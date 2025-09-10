@@ -101,10 +101,10 @@ Le back-end créé doit pouvoir gérer les produits dans une base de données SQ
 ✅ Vous pouvez ajouter des tests Postman ou Swagger pour valider votre API
 
 ## Installation locale
-Frontend :
+- Frontend :
   - Prérequis : NPM
   - dans "/front" effectuer simplement "npm install" pour installer toutes les dépendances puis "npm start" pour lancer l'application
-Backend :
+- Backend :
   - Prérequis : Java 17+
   - Version compilée du back : back/livrable/alten-shop-backend.jar
   - Lancer l'application en double cliquant sur cette archive . Vous pouvez vérifier que l'application est bien lancée en accédant à la console h2 :  localhost:8080/h2-console (endpoint qui échappe aux règles de sécurité mises en place dans l'application)
