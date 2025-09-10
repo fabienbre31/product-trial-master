@@ -3,6 +3,7 @@ package com.example.product;
 import com.example.product.model.Cart;
 import com.example.product.model.Product;
 import com.example.product.repository.UserRepository;
+import com.example.product.security.JwtFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,7 +88,7 @@ class CartControllerTests {
                 .setSubject("user@example.com")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-                .signWith(com.example.product.config.SecurityConfig.JWT_SECRET)
+                .signWith(JwtFilter.JWT_SECRET)
                 .compact();
     }
 
@@ -96,7 +97,7 @@ class CartControllerTests {
                 .setSubject("admin@admin.com")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-                .signWith(com.example.product.config.SecurityConfig.JWT_SECRET)
+                .signWith(JwtFilter.JWT_SECRET)
                 .compact();
     }
 

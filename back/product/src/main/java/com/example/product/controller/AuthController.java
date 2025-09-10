@@ -1,6 +1,7 @@
 package com.example.product.controller;
 
 import com.example.product.model.User;
+import com.example.product.security.JwtFilter;
 import com.example.product.service.UserService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +50,7 @@ public class AuthController {
                             .setSubject(user.getEmail())
                             .setIssuedAt(new Date())
                             .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 jour
-                            .signWith(com.example.product.config.SecurityConfig.JWT_SECRET)
+                            .signWith(JwtFilter.JWT_SECRET)
                             .compact();
                     return ResponseEntity.ok(Map.of("token", token));
                 })
