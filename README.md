@@ -106,7 +106,7 @@ Le back-end créé doit pouvoir gérer les produits dans une base de données SQ
   - dans "/front" effectuer simplement "npm install" pour installer toutes les dépendances puis "npm start" pour lancer l'application
 - Backend :
   - Prérequis : Java 17+
-  - Version compilée du back : back/livrable/alten-shop-backend.jar
+  - Version compilée du back : back/livrable/product-0.0.1-SNAPSHOT.jar
   - Lancer l'application en double cliquant sur cette archive . Vous pouvez vérifier que l'application est bien lancée en accédant à la console h2 :  localhost:8080/h2-console (endpoint qui échappe aux règles de sécurité mises en place dans l'application)
     - Si l'application ne s'est pas lancée, lancer via une console pour plus d'informations ('java -jar [archive]').
   - Accéder à la BDD H2 locale : 
@@ -117,7 +117,6 @@ Le back-end créé doit pouvoir gérer les produits dans une base de données SQ
   - Scenarios de tests postman : back/postman/api-tests.json
 
 ## Informations complémentaires
-  - Veuillez noter que la BDD H2 est configurée pour un usage local de demonstration et non pour un environnement de production :
-    - Elle est réinitialisée au lancement de l'application ;
-    - Les tests d'intégration partagent la même base de données ;
-    - Elle ne contient par défaut que les 30 produits communiqués initialement dans front/src/assets/products.json, réadapté au format SQL dans back/product/src/main/ressources en data.sql et schema.sql)
+  - Veuillez noter que la BDD H2 est actuellement configurée pour un usage local de demonstration et non pour un environnement de production :
+    - Elle est réinitialisée au lancement de l'application et ne contient par défaut que les 30 produits communiqués initialement dans front/src/assets/products.json (réadapté au format SQL dans back/product/src/main/ressources en data.sql et schema.sql)
+    - Les tests d'intégration partagent la même base de données (un rollback est effectué après chaque test)
