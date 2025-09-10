@@ -107,8 +107,9 @@ Le back-end créé doit pouvoir gérer les produits dans une base de données SQ
 - Backend :
   - Prérequis : Java 17+
   - Version compilée du back : back/livrable/product-0.0.1-SNAPSHOT.jar
-  - Lancer l'application en double cliquant sur cette archive . Vous pouvez vérifier que l'application est bien lancée en accédant à la console h2 :  localhost:8080/h2-console (endpoint qui échappe aux règles de sécurité mises en place dans l'application)
-    - Si l'application ne s'est pas lancée, lancer via une console pour plus d'informations ('java -jar [archive]').
+  - Lancer l'application en double cliquant sur cette archive. Vous pouvez vérifier que l'application est bien lancée en accédant à la console h2 (localhost:8080/h2-console)
+    - Si l'application ne s'est pas lancée, verifiez que votre JAVA_HOME pointe bien vers un Java17+
+    - Vous pouvez aussi lancer l'archive via une console pour plus d'informations sur l'erreur ('java -jar [archive]').
   - Accéder à la BDD H2 locale : 
     - JDBC URL : jdbc:h2:mem:productdb
     - User Name : sa    (pas de mot de passe)
