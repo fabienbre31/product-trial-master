@@ -100,15 +100,24 @@ Le back-end créé doit pouvoir gérer les produits dans une base de données SQ
 
 ✅ Vous pouvez ajouter des tests Postman ou Swagger pour valider votre API
 
-## Installation en local
+## Installation locale
+Frontend :
+  - Prérequis : NPM
+  - dans "/front" effectuer simplement "npm install" pour installer toutes les dépendances puis "npm start" pour lancer l'application
+Backend :
+  - Prérequis : Java 17+
   - Version compilée du back : back/livrable/alten-shop-backend.jar
-  - En double cliquant sur cette archive, l'application se lancera en background en local
-    - S'il n'y a pas d'erreurs, vous pourrez alors accéder à la BDD H2 : localhost:8080/h2-console (endpoint qui échappe aux règles de sécurité mises en place dans l'application)
-    - En cas d'erreur, lancer l'archive depuis une console avec "java -jar [archive]" pour plus d'informations. Java 17 est necessaire.
+  - Lancer l'application en double cliquant sur cette archive . Vous pouvez vérifier que l'application est bien lancée en accédant à la console h2 :  localhost:8080/h2-console (endpoint qui échappe aux règles de sécurité mises en place dans l'application)
+    - Si l'application ne s'est pas lancée, lancer via une console pour plus d'informations ('java -jar [archive]').
+  - Accéder à la BDD H2 locale : 
+    - JDBC URL : jdbc:h2:mem:productdb
+    - User Name : sa    (pas de mot de passe)
+  - Vous aurez une erreur : '"XXXX/productdb" not found, either pre-create it or allow remote database creation (not recommended in secure environments) [90149-232] 90149/90149 (Help)'
+    - créer un fichier product.db au chemin indiqué
   - Scenarios de tests postman : back/postman/api-tests.json
 
 ## Informations complémentaires
-  - Veuillez noter que la BDD H2 est configurée pour un usage local et non pour un environnement de production :
+  - Veuillez noter que la BDD H2 est configurée pour un usage local de demonstration et non pour un environnement de production :
     - Elle est réinitialisée au lancement de l'application ;
     - Les tests d'intégration partagent la même base de données ;
     - Elle ne contient par défaut que les 30 produits communiqués initialement dans front/src/assets/products.json, réadapté au format SQL dans back/product/src/main/ressources en data.sql et schema.sql)
